@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 const allowedOrigins = [
   "http://localhost:5173",                   // Vite local dev server
-  "https://your-username.github.io",         // GitHub Pages (replace with real URL)
+  "https://rajan311.github.io/vite/",         // GitHub Pages (replace with real URL)
   "https://backend-2y9s.onrender.com"         // Optional: Vercel/Render if hosting frontend elsewhere
 ];
 
