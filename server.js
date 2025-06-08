@@ -6,20 +6,32 @@ const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
+
+const allowedOrigins = [
+  "http://localhost:5173",                   // Vite local dev server
+  "https://your-username.github.io",         // GitHub Pages (replace with real URL)
+  "https://backend-2y9s.onrender.com"         // Optional: Vercel/Render if hosting frontend elsewhere
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST"],
+  credentials: true
+}));
+
+app.use(express.json());
+
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173", // Your frontend URL
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true
   },
 });
-
-app.use(cors());
-app.use(express.json());
 
 // Store room data (users, files, messages, video state)
 const rooms = {};
 
-// Handle Socket.IO connections
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
@@ -37,7 +49,6 @@ io.on("connection", (socket) => {
       };
     }
 
-    // Assign unique name
     let finalName = userName && userName.trim() ? userName.trim() : "Author";
     let counter = 1;
     let baseName = finalName;
